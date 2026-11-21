@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Prediksi Listrik</title>
+  <meta name="description" content="Perkirakan tagihan listrik rumahmu dari kebiasaan memakai alat elektronik, lalu cari tahu berapa yang bisa dihemat.">
+  <meta name="theme-color" content="#EDF1F7">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%230B1730'/%3E%3Cpath d='M18 5 8 18h7l-1 9 10-13h-7l1-9z' fill='%23FFC62E'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <a class="skip" href="#utama">Lewati ke isi halaman</a>
+
+  <header class="top">
+    <a class="brand" href="#prediksi" aria-label="Prediksi Listrik, kembali ke awal">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 32 32" width="34" height="34"><rect width="32" height="32" rx="10" fill="#0B1730"/><path d="M18 5 8 18h7l-1 9 10-13h-7l1-9z" fill="#FFC62E"/></svg>
+      </span>
+      <span class="brand-name">Prediksi Listrik</span>
+    </a>
+
+    <nav class="tabs" id="tabs" role="tablist" aria-label="Bagian aplikasi">
+      <span class="tabs-pill" aria-hidden="true"></span>
+      <button type="button" role="tab" id="tab-prediksi" data-tab="prediksi" aria-selected="true" aria-controls="pane-prediksi">Prediksi</button>
+      <button type="button" role="tab" id="tab-simulasi" data-tab="simulasi" aria-selected="false" aria-controls="pane-simulasi" tabindex="-1">Simulasi<span class="lebih"> hemat</span></button>
+      <button type="button" role="tab" id="tab-token" data-tab="token" aria-selected="false" aria-controls="pane-token" tabindex="-1">Token</button>
+      <button type="button" role="tab" id="tab-model" data-tab="model" aria-selected="false" aria-controls="pane-model" tabindex="-1">Model</button>
+    </nav>
+  </header>
+
+  <main id="utama" class="app" data-tab="prediksi">
+
+    <!-- ===================== DATA RUMAH ===================== -->
+    <section class="rumah" id="rumah" aria-labelledby="judul-rumah">
+      <div class="rumah-head">
+        <div>
+          <h1 id="judul-rumah">Data rumah</h1>
+          <p class="sub">Ubah angkanya, hasilnya langsung ikut berubah.</p>
+        </div>
+        <button type="button" class="link" id="atur-ulang">Pakai contoh</button>
+      </div>
+
+      <div class="scene-wrap" id="scene-wrap">
+        <svg id="scene" viewBox="0 0 520 420" role="group" aria-label="Rumahmu. Pilih alat atau penghuni untuk mengubahnya."></svg>
+        <div class="pop" id="pop" role="dialog" aria-label="Pengaturan alat" hidden></div>
+      </div>
+      <p class="scene-hint">Sentuh alat atau penghuni di rumah untuk mengubahnya. Angka biaya di tiap alat ikut berubah.</p>
+
+      <p class="atur-judul">Atau atur dengan angka</p>
+
+      <div class="field">
+        <div class="field-head">
+          <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2 4 14h7l-1 8 9-12h-7l1-8z"/></svg>
+          <span class="field-label" id="l-va">Daya listrik terpasang</span>
+          <output class="field-val" id="o-va" for="va-group"></output>
+        </div>
+        <div class="seg" id="va-group" role="radiogroup" aria-labelledby="l-va">
+          <label><input type="radio" name="va" value="900"><span>900</span></label>
+          <label><input type="radio" name="va" value="1300"><span>1.300</span></label>
+          <label><input type="radio" name="va" value="2200"><span>2.200</span></label>
+          <label><input type="radio" name="va" value="3500"><span>3.500</span></label>
+          <label><input type="radio" name="va" value="5500"><span>5.500</span></label>
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="field-head">
+          <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17" cy="9" r="2.4"/><path d="M16 14.2c2.9.2 5 2.6 5 5.8"/></svg>
+          <span class="field-label" id="l-penghuni">Jumlah penghuni</span>
+          <output class="field-val" id="o-penghuni"></output>
+        </div>
+        <div class="stepper" data-field="num_occupants" data-min="1" data-max="6" role="group" aria-labelledby="l-penghuni">
+          <button type="button" data-d="-1" aria-label="Kurangi penghuni">−</button>
+          <output class="stepper-num" aria-live="polite"></output>
+          <button type="button" data-d="1" aria-label="Tambah penghuni">+</button>
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="field-head">
+          <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v18M4.2 7.5l15.6 9M4.2 16.5l15.6-9M9.5 4.5 12 6.5l2.5-2M9.5 19.5l2.5-2 2.5 2"/></svg>
+          <span class="field-label" id="l-ac">Jumlah AC</span>
+          <output class="field-val" id="o-ac"></output>
+        </div>
+        <div class="stepper" data-field="num_ac_units" data-min="0" data-max="4" role="group" aria-labelledby="l-ac">
+          <button type="button" data-d="-1" aria-label="Kurangi AC">−</button>
+          <output class="stepper-num" aria-live="polite"></output>
+          <button type="button" data-d="1" aria-label="Tambah AC">+</button>
+        </div>
+      </div>
+
+      <div class="field" id="field-jam-ac">
+        <div class="field-head">
+          <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+          <label class="field-label" for="r-jam-ac">AC menyala per hari, tiap unit</label>
+          <output class="field-val" id="o-jam-ac" for="r-jam-ac"></output>
+        </div>
+        <input class="range" type="range" id="r-jam-ac" data-field="ac_hours_per_day" min="0" max="14" step="0.5">
+      </div>
+
+      <div class="field">
+        <div class="field-head">
+          <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M6 10h12M9 6v2M9 13v3"/></svg>
+          <span class="field-label" id="l-kulkas">Jumlah kulkas</span>
+          <output class="field-val" id="o-kulkas"></output>
+        </div>
+        <div class="seg seg-2" id="kulkas-group" role="radiogroup" aria-labelledby="l-kulkas">
+          <label><input type="radio" name="kulkas" value="1"><span>1 kulkas</span></label>
+          <label><input type="radio" name="kulkas" value="2"><span>2 kulkas</span></label>
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="field-head">
+          <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="2.5"/><path d="M8 20h8M12 16v4"/></svg>
+          <label class="field-label" for="r-tv">TV dan laptop menyala per hari</label>
+          <output class="field-val" id="o-tv" for="r-tv"></output>
+        </div>
+        <input class="range" type="range" id="r-tv" data-field="tv_laptop_hours_per_day" min="0" max="10" step="0.5">
+      </div>
+
+      <div class="field field-switch">
+        <div class="field-head">
+          <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="2" width="16" height="20" rx="2.5"/><circle cx="12" cy="14" r="4"/><path d="M8 6h.01M11 6h.01"/></svg>
+          <span class="field-label" id="l-cuci">Punya mesin cuci</span>
+          <button type="button" class="switch" id="sw-cuci" role="switch" aria-checked="true" aria-labelledby="l-cuci"><span></span></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== HASIL ===================== -->
+    <section class="hasil" id="hasil" aria-label="Hasil perhitungan">
+      <div class="alert" id="alert" role="alert" hidden></div>
+
+      <!-- Prediksi -->
+      <div class="pane" id="pane-prediksi" role="tabpanel" aria-labelledby="tab-prediksi">
+        <div class="meter" id="meter">
+          <div class="meter-head">
+            <h2>Perkiraan tagihan per bulan</h2>
+            <span class="chip" id="chip-kategori" data-k=""></span>
+          </div>
+
+          <div class="screen">
+            <div class="lcd-row">
+              <span class="rp-label">Rp</span>
+              <div class="lcd" id="lcd" aria-hidden="true">
+                <div class="lcd-ghost">8.888.888</div>
+                <div class="lcd-val" id="lcd-val"></div>
+              </div>
+            </div>
+            <p class="range-teks" id="range-teks">Menghitung...</p>
+          </div>
+          <p class="sr-only" id="ringkas-sr" aria-live="polite"></p>
+
+          <dl class="facts" id="facts">
+            <div><dt>Pemakaian listrik</dt><dd id="f-kwh">-</dd></div>
+            <div><dt>Rata-rata per hari</dt><dd id="f-hari">-</dd></div>
+          </dl>
+
+          <div class="kat" id="kat">
+            <div class="kat-title">Posisi tagihanmu</div>
+            <div class="kat-track" id="kat-track">
+              <span class="kat-seg" data-k="Hemat"></span>
+              <span class="kat-seg" data-k="Normal"></span>
+              <span class="kat-seg" data-k="Boros"></span>
+              <span class="kat-pin" id="kat-pin"></span>
+            </div>
+            <div class="kat-labels" id="kat-labels"></div>
+          </div>
+
+          <div class="target" id="target">
+            <h3>Mau tagihan berapa?</h3>
+            <p class="target-sub" id="target-sub">Geser untuk memilih target. Aku carikan perubahan yang paling ringan.</p>
+            <div class="target-row">
+              <input class="range" type="range" id="r-target" step="5000" aria-label="Target tagihan per bulan" aria-describedby="target-sub">
+              <output class="target-val" id="o-target" for="r-target"></output>
+            </div>
+            <div class="chips chips-dark" id="target-cepat" role="group" aria-label="Target cepat">
+              <button type="button" data-k="Normal">Turun ke Normal</button>
+              <button type="button" data-k="Hemat">Turun ke Hemat</button>
+            </div>
+            <div id="target-hasil" aria-live="polite"></div>
+          </div>
+
+          <div class="asal">
+            <h3>Dari mana tagihan ini berasal</h3>
+            <div class="asal-bar" id="asal-bar" role="img" aria-label="Pembagian tagihan per komponen"></div>
+            <ul class="asal-list" id="asal-list"></ul>
+          </div>
+
+          <div class="tip" id="tip" hidden></div>
+          <p class="fine">Ini perkiraan statistik, bukan jaminan. Hasil nyata bisa berbeda sesuai tarif dan kebiasaan di rumahmu.</p>
+        </div>
+      </div>
+
+      <!-- Simulasi -->
+      <div class="pane" id="pane-simulasi" role="tabpanel" aria-labelledby="tab-simulasi" hidden>
+        <div class="sheet">
+          <div class="sheet-head">
+            <h2>Berapa yang bisa dihemat?</h2>
+            <p id="sim-ringkas" class="sub">Menghitung...</p>
+          </div>
+
+          <ul class="skenario" id="sim-list"></ul>
+          <div class="kosong" id="sim-kosong" hidden>
+            <strong>Tidak ada skenario otomatis untuk rumah ini.</strong>
+            <span>Skenario otomatis butuh AC yang menyala atau TV dan laptop yang dipakai minimal 2 jam. Coba skenario sendiri di bawah.</span>
+          </div>
+
+          <div class="sendiri">
+            <h3>Coba skenario sendiri</h3>
+            <p class="sub">Geser pengaturan di bawah untuk melihat tagihan barunya.</p>
+
+            <div class="mini">
+              <div class="field-head">
+                <label class="field-label" for="s-ac">Jumlah AC</label>
+                <output class="field-val" id="so-ac" for="s-ac"></output>
+              </div>
+              <input class="range" type="range" id="s-ac" min="0" max="4" step="1">
+            </div>
+            <div class="mini" id="mini-jam">
+              <div class="field-head">
+                <label class="field-label" for="s-jam">AC menyala per hari, tiap unit</label>
+                <output class="field-val" id="so-jam" for="s-jam"></output>
+              </div>
+              <input class="range" type="range" id="s-jam" min="0" max="14" step="0.5">
+            </div>
+            <div class="mini">
+              <div class="field-head">
+                <label class="field-label" for="s-tv">TV dan laptop menyala per hari</label>
+                <output class="field-val" id="so-tv" for="s-tv"></output>
+              </div>
+              <input class="range" type="range" id="s-tv" min="0" max="10" step="0.5">
+            </div>
+
+            <div class="banding" id="banding" aria-live="polite"></div>
+          </div>
+          <p class="fine">Semua angka di sini perkiraan statistik, bukan jaminan.</p>
+        </div>
+      </div>
+
+      <!-- Token -->
+      <div class="pane" id="pane-token" role="tabpanel" aria-labelledby="tab-token" hidden>
+        <div class="sheet">
+          <div class="sheet-head">
+            <h2>Token habis dalam berapa hari?</h2>
+            <p class="sub">Isi nominal token yang kamu beli. Pemakaian dihitung dari data rumah di samping.</p>
+          </div>
+
+          <label class="field-label" for="nominal">Nominal token</label>
+          <div class="nominal">
+            <span>Rp</span>
+            <input id="nominal" type="text" inputmode="numeric" autocomplete="off" value="200.000" aria-describedby="nominal-info">
+          </div>
+          <div class="chips" id="nominal-chips" role="group" aria-label="Pilihan cepat nominal">
+            <button type="button" data-v="50000">50.000</button>
+            <button type="button" data-v="100000">100.000</button>
+            <button type="button" data-v="200000">200.000</button>
+            <button type="button" data-v="500000">500.000</button>
+            <button type="button" data-v="1000000">1.000.000</button>
+          </div>
+          <input class="range" type="range" id="r-nominal" min="20000" max="2000000" step="10000" aria-label="Geser nominal token">
+          <p class="nominal-info" id="nominal-info">Nominal yang bisa dihitung: Rp 20.000 sampai Rp 5.000.000.</p>
+
+          <div class="meter meter-token">
+            <div class="screen">
+              <div class="lcd-row">
+                <div class="lcd" id="lcd-hari" aria-hidden="true">
+                  <div class="lcd-ghost">8888</div>
+                  <div class="lcd-val" id="lcd-hari-val"></div>
+                </div>
+                <span class="rp-label">hari</span>
+              </div>
+              <p class="range-teks" id="token-tgl">Menghitung...</p>
+            </div>
+            <p class="sr-only" id="token-sr" aria-live="polite"></p>
+            <dl class="facts" id="token-facts">
+              <div><dt>Token ini setara</dt><dd id="t-kwh">-</dd></div>
+              <div><dt>Pemakaianmu</dt><dd id="t-hari">-</dd></div>
+            </dl>
+            <div class="kal-wrap">
+              <h3>Hari demi hari</h3>
+              <div class="kal-hari" aria-hidden="true"><span>Sen</span><span>Sel</span><span>Rab</span><span>Kam</span><span>Jum</span><span>Sab</span><span>Min</span></div>
+              <div class="kal" id="kal" role="img" aria-label="Kalender token"></div>
+              <p class="kal-ket" id="kal-ket"></p>
+            </div>
+            <p class="fine" id="token-fine">Tarif rata-rata dihitung dari data. Potongan admin dan pajak token belum dihitung.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== TENTANG MODEL ===================== -->
+    <section class="model" id="pane-model" role="tabpanel" aria-labelledby="tab-model" hidden>
+      <div class="model-intro">
+        <h2>Seberapa bisa dipercaya model ini?</h2>
+        <p class="sub" id="model-intro-teks">Memuat...</p>
+      </div>
+
+      <div class="angka" id="m-angka"></div>
+
+      <div class="model-grid">
+        <div class="blok">
+          <h3>Tebakan kategori vs kenyataan</h3>
+          <p class="sub">Baris adalah kategori sebenarnya, kolom adalah tebakan SVM. Angka di diagonal berarti tebakan yang benar.</p>
+          <div id="m-matriks"></div>
+          <div id="m-perkelas" class="perkelas"></div>
+        </div>
+
+        <div class="blok">
+          <h3>Pengaruh tiap faktor ke tagihan</h3>
+          <p class="sub">Perubahan tagihan per bulan, dengan faktor lain dianggap tetap.</p>
+          <div id="m-koef" class="koef"></div>
+        </div>
+      </div>
+
+      <div class="blok blok-lebar">
+        <h3>Batas kategori dan tarif</h3>
+        <div id="m-batas" class="batas"></div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Bilah ringkas untuk layar kecil: muncul saat hasil tidak terlihat -->
+  <button type="button" class="dock" id="dock" aria-label="Kembali ke hasil perkiraan" hidden>
+    <span class="dock-teks"><small>Perkiraan per bulan</small><strong id="dock-nilai">-</strong></span>
+    <span class="chip" id="dock-chip" data-k=""></span>
+  </button>
+
+  <div class="toast" id="toast" role="status" hidden></div>
+
+  <script src="/static/app.js" defer></script>
+  <script src="/static/interaksi.js" defer></script>
+</body>
+</html>
